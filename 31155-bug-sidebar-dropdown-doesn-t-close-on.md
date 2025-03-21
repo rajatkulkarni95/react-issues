@@ -1,0 +1,29 @@
+# Bug: Sidebar Dropdown Doesn't Close on 
+
+> Issue #31155 - Created on 10/8/2024
+
+> Original URL: https://github.com/facebook/react/issues/31155
+
+## Description
+
+
+When clicking on a sidebar option that triggers a dropdown menu, the dropdown opens as expected. However, clicking the same option again does not close (toggle off) the dropdown. The dropdown remains visible, and the expected behavior of closing the dropdown on the second click does not occur.
+
+![image](https://github.com/user-attachments/assets/2b6c3080-0483-4f61-8658-6658d5b7c5a9)
+
+
+React version: 18.3.1
+
+## Steps To Reproduce
+
+1.Click on the sidebar option to open the dropdown menu.
+2.Click on the same sidebar option again to close the dropdown menu.
+
+
+## The current behavior
+When the sidebar button is clicked, the dropdown menu opens as expected. However, clicking the button again does not close the dropdown, which results in the menu remaining open and the user unable to toggle it off.
+
+
+## The expected behavior
+Clicking the sidebar button a second time should close the dropdown menu, toggling it off. The dropdown should behave as a proper toggle: opening on the first click and closing on the second click.
+

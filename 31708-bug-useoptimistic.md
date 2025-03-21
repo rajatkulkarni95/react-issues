@@ -1,0 +1,46 @@
+# Bug: useOptimistic
+
+> Issue #31708 - Created on 12/9/2024
+
+> Original URL: https://github.com/facebook/react/issues/31708
+
+## Description
+
+React version:19.0.0
+[I got example from react.dev](https://react.dev/reference/react/useOptimistic) slightly modified it.
+ 
+Now `key` attribute derive value from data (message)
+```
+        <div key={message.id}>
+          {message.text}
+          {!!message.sending && <small> (Sending...)</small>}
+        </div>
+```
+
+## Steps To Reproduce
+
+1.[Open link](https://codesandbox.io/p/sandbox/react-dev-forked-5hddwt)
+2.Send new message
+3.Open console
+
+## The current behavior
+On the image below we can see duplicating list of messages from [I got example from react.dev](https://react.dev/reference/react/useOptimistic).
+![image](https://github.com/user-attachments/assets/4868e7d0-7eb1-4e29-ac11-eff9047982f7)
+
+There was no error in [I got example from react.dev](https://react.dev/reference/react/useOptimistic) because `key` gets values from `index`, `index` is always unique.
+
+        <div key={index}>
+          {message.text}
+          {!!message.sending && <small> (Sending...)</small>}
+        </div>
+
+Code that is slightly modified by me print out following (from console):
+
+> Encountered two children with the same key, `8908d3a9-13b7-4576-bf85-e850f7ab2c1c`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version
+
+I don't know the reason of that behaviour but I see that `updateFn` in `useOptimistic` is called with `new message` twice:
+1. First time after `addOptimisticMessage` is called, 
+2. Second time while `Thread` component is re-rendered.
+
+
+

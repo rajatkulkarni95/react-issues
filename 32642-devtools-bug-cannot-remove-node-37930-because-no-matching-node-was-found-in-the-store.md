@@ -1,0 +1,52 @@
+# [DevTools Bug] Cannot remove node "37930" because no matching node was found in the Store.
+
+> Issue #32642 - Created on 3/17/2025
+
+> Original URL: https://github.com/facebook/react/issues/32642
+
+## Description
+
+### Website or app
+
+http://localhost:3000/page/edit
+
+### Repro steps
+
+![Image](https://github.com/user-attachments/assets/5ea7058e-b8f6-4520-b490-a1af569da1f1)
+
+### How often does this bug happen?
+
+Every time
+
+### DevTools package (automated)
+
+react-devtools-extensions
+
+### DevTools version (automated)
+
+6.1.1-44c3d3d665
+
+### Error message (automated)
+
+Cannot remove node "37930" because no matching node was found in the Store.
+
+### Error call stack (automated)
+
+```text
+at chrome-extension://fmkadmapgofadopljbjfkapdkoienihi/build/main.js:1:1193929
+    at v.emit (chrome-extension://fmkadmapgofadopljbjfkapdkoienihi/build/main.js:1:1160378)
+    at chrome-extension://fmkadmapgofadopljbjfkapdkoienihi/build/main.js:1:1161985
+    at bridgeListener (chrome-extension://fmkadmapgofadopljbjfkapdkoienihi/build/main.js:1:1572692)
+```
+
+### Error component stack (automated)
+
+```text
+
+```
+
+### GitHub query string (automated)
+
+```text
+https://api.github.com/search/issues?q=Cannot remove node  because no matching node was found in the Store. in:title is:issue is:open is:public label:"Component: Developer Tools" repo:facebook/react
+```

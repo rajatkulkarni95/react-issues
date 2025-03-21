@@ -1,0 +1,74 @@
+# Bug [`eslint-plugin-react-hooks`]: `Config (unnamed): Key "plugins": This appears to be in eslintrc format (array of strings) rather than flat config format (object).`
+
+> Issue #32494 - Created on 3/1/2025
+
+> Original URL: https://github.com/facebook/react/issues/32494
+
+## Description
+
+<!--
+  Please provide a clear and concise description of what the bug is. Include
+  screenshots if needed. Please test using the latest version of the relevant
+  React packages to make sure your issue has not already been fixed.
+-->
+
+React version: 19.0.0
+eslint-plugin-react-hooks: 5.2.0
+
+## Steps To Reproduce
+
+1. Follow installation instruction for flat config: https://github.com/facebook/react/tree/HEAD/packages/eslint-plugin-react-hooks#installation
+
+<!--
+  Your bug will get fixed much faster if we can run your code and it doesn't
+  have dependencies other than React. Issues without reproduction steps or
+  code examples may be immediately closed as not actionable.
+-->
+
+Link to code example:
+
+<!--
+  Please provide a CodeSandbox (https://codesandbox.io/s/new), a link to a
+  repository on GitHub, or provide a minimal code example that reproduces the
+  problem. You may provide a screenshot of the application if you think it is
+  relevant to your bug report. Here are some tips for providing a minimal
+  example: https://stackoverflow.com/help/mcve.
+-->
+
+https://eslint-online-playground.netlify.app/#eNptj8FOAyEURX+FsCExHdQmLqxx58J/KDVBeDNi4UGAMTXN/Lu8YRJduHvJuedyufKSzS1cdEge5GfhB24ilso0e2biXTwp5DsOxTusspHRTT3lQoq5shumC8ugTX2N8VzYmGNgoueH5OfJ4bDi4YM49SmEy+paGPXsKzsqZH86tmfKUWQwMQRAC1acdgpPfU3S5qwnWhuxLbmSrnj9TqD4oV0h2tm3uxkELHy9QKIWNA4KZVaFWB/atbdHub+Xd5v3S//5xiY8yD3lKb4oXPjyA/aMb5k=
+
+## The current behavior
+
+Error:
+```
+Oops! Something went wrong! :(
+
+ESLint: 9.21.0
+
+
+A config object has a "plugins" key defined as an array of strings. It looks something like this:
+
+    {
+        "plugins": ["react-hooks"]
+    }
+
+Flat config requires "plugins" to be an object, like this:
+
+    {
+        plugins: {
+            react-hooks: pluginObject
+        }
+    }
+
+Please see the following page for information on how to convert your config object into the correct format:
+https://eslint.org/docs/latest/use/configure/migration-guide#importing-plugins-and-custom-parsers
+
+If you're using a shareable config that you cannot rewrite in flat config format, then use the compatibility utility:
+https://eslint.org/docs/latest/use/configure/migration-guide#using-eslintrc-configs-in-flat-config
+```
+
+## The expected behavior
+
+No error.
+
+@michaelfaith

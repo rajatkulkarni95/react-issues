@@ -1,0 +1,157 @@
+# [React 19] `useOptimistic` rolls back the state for no reason
+
+> Issue #31967 - Created on 1/3/2025
+
+> Original URL: https://github.com/facebook/react/issues/31967
+
+## Description
+
+## Summary
+
+<!--
+  Please provide a CodeSandbox (https://codesandbox.io/s/new), a link to a
+  repository on GitHub, or provide a minimal code example that reproduces the
+  problem. You may provide a screenshot of the application if you think it is
+  relevant to your bug report. Here are some tips for providing a minimal
+  example: https://stackoverflow.com/help/mcve.
+-->
+
+Tried all the ways server actions, optimistic updates and forms/buttons interact, but nothing. It just rolls back for no reason. No errors on the server, no errors inside the code either, but it still rolls back.
+
+https://github.com/user-attachments/assets/ab5a5c8d-6040-4816-8d0c-f036f2a0a76a
+
+Minimal example:
+https://codesandbox.io/p/sandbox/modern-morning-cjxnnr
+
+My code :
+```ts
+export const WarehousesTable = ({ warehouses, ...props }: WarehousesProps) => {
+	// FIXME: https://github.com/facebook/react/issues/31967
+	// const warehouses = use(promise);
+
+	const [optimisticWarehouses, deleteOptimistic] = useOptimistic<
+		Warehouse[],
+		string
+	>(
+		[{ id: "sadasd", capacity: 100, location: "asdas", name: "sdasd" }],
+		(prev, id) => {
+			return prev.filter((w) => w.id !== id);
+		},
+	);
+
+	const deleteAction = async (formData: FormData) => {
+		const id = formData.get("id") as string;
+
+		deleteOptimistic(id);
+
+		await new Promise((resolve) => setTimeout(resolve, 1000));
+		// await deleteWarehouseAction(formData, id);
+
+		// throw new Error("SADsd");
+	};
+
+	// useEffect(() => {
+	// 	console.log(isPending);
+	// }, [isPending]);
+
+	useEffect(() => {
+		console.log("OPTIM: ", optimisticWarehouses);
+	}, [optimisticWarehouses]);
+
+	return (
+		<TabsContent value="warehouses" {...props}>
+			<Card>
+				<CardHeader className="flex justify-between flex-row gap-8">
+					<div>
+						<CardTitle>Warehouse management</CardTitle>
+						<CardDescription>
+							View and editing information about warehouses
+						</CardDescription>
+					</div>
+					<Button variant={"outline"} asChild>
+						<Link href="/warehouses/add">Add</Link>
+					</Button>
+				</CardHeader>
+				<CardContent>
+					<Table>
+						<TableCaption>List of active warehouses</TableCaption>
+						<TableHeader>
+							<TableRow>
+								<TableHead>ID</TableHead>
+								<TableHead>Name</TableHead>
+								<TableHead>Location</TableHead>
+								<TableHead>Capacity</TableHead>
+								<TableHead>Actions</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody>
+							{optimisticWarehouses.map(({ id, name, capacity, location }) => {
+								return (
+									<TableRow key={id}>
+										<TableCell>{id}</TableCell>
+										<TableCell>{name}</TableCell>
+										<TableCell>{capacity}</TableCell>
+										<TableCell>{location}</TableCell>
+										<TableCell>
+											<div className="flex space-x-2">
+												{/* FIXME: LINK /${id}/edit */}
+												<Link href={`/warehouses/edit/${id}`}>
+													<Button variant="outline" size="sm">
+														<PenSquare className="h-4 w-4" />
+													</Button>
+												</Link>
+												<form
+													action={deleteAction}
+													// onSubmit={async (e) => {
+													// 	e.preventDefault();
+
+													// 	const formData = new FormData(e.currentTarget);
+
+													// 	await deleteAction(formData);
+													// }}
+												>
+													<input type="hidden" name="id" defaultValue={id} />
+													<Button
+														// onClick={async (e) => {
+														// 	startTransition(() =>
+														// 	);
+
+														// 	startTransition(async () =>
+														// 		deleteWarehouseActionWithId(),
+														// 	);
+														// }}
+														variant="outline"
+														size="sm"
+													>
+														<Trash2 className="h-4 w-4" />
+													</Button>
+												</form>
+											</div>
+										</TableCell>
+									</TableRow>
+								);
+							})}
+						</TableBody>
+					</Table>
+				</CardContent>
+			</Card>
+		</TabsContent>
+	);
+};
+
+```
+
+probably all ways of creating this functionality have been tried.
+- action with closure/with formData
+- call of optimistic update startTransition and without
+- removing the deleteOptimistic function into the action itself or creating it inside a hook
+- initial state in useState
+- call action from button with startTranistion
+
+None of this helps.
+
+P.S. Also, errors are not displayed in the console at all if they occur inside useOptimistic - it's inconvenient and it's not clear where what happened. For example, in this situation
+
+
+React 19.0.0
+Next.js 15.1.3

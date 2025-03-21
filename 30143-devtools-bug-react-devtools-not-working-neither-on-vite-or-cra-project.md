@@ -1,0 +1,49 @@
+# [DevTools Bug]: React Devtools not working neither on vite or cra project
+
+> Issue #30143 - Created on 6/30/2024
+
+> Original URL: https://github.com/facebook/react/issues/30143
+
+## Description
+
+### Website or app
+
+[https://github.com/prashantmgk/portfoliowebsite](i was trying to use it while creating my portfolio site)
+
+### Repro steps
+
+![image](https://github.com/facebook/react/assets/30362730/34f4e6a7-fde5-4f31-b54d-448a0d95364a)
+![image](https://github.com/facebook/react/assets/30362730/a60c3f3e-6eab-4668-bb9c-6dfc82f9765a)
+
+I was trying to use React Devtools but i was not able to use it as you can see it in pictures. I thought it was cause i was using vite to create my react project, but i didnt work either in cra app. I saw the error when i navigated to the sources tab as you can see in second picture which is as follows:
+
+`Could not load content for webpack:///react-devtools-shared/src/backend/console.js (Fetch through target failed: Unsupported URL scheme; Fallback: HTTP error: status code 404, net::ERR_UNKNOWN_URL_SCHEME)`
+
+### How often does this bug happen?
+
+Every time
+
+### DevTools package (automated)
+
+_No response_
+
+### DevTools version (automated)
+
+5.2.0 (5/8/2024)
+
+### Error message (automated)
+
+- Could not load content for webpack:///react-devtools-shared/src/backend/console.js (Fetch through target failed: Unsupported URL scheme; Fallback: HTTP error: status code 404, net::ERR_UNKNOWN_URL_SCHEME)
+- Could not load content for webpack:///react-devtools-shared/src/backend/DevToolsConsolePatching.js (Fetch through target failed: Unsupported URL scheme; Fallback: HTTP error: status code 404, net::ERR_UNKNOWN_URL_SCHEME)
+
+### Error call stack (automated)
+
+_No response_
+
+### Error component stack (automated)
+
+_No response_
+
+### GitHub query string (automated)
+
+_No response_

@@ -1,0 +1,69 @@
+# [Compiler Bug]: Discriminated unions with undefined cause compiler to blow up
+
+> Issue #31420 - Created on 11/5/2024
+
+> Original URL: https://github.com/facebook/react/issues/31420
+
+## Description
+
+### What kind of issue is this?
+
+- [X] React Compiler core (the JS output is incorrect, or your app works incorrectly after optimization)
+- [ ] babel-plugin-react-compiler (build issue installing or using the Babel plugin)
+- [ ] eslint-plugin-react-compiler (build issue installing or using the eslint plugin)
+- [ ] react-compiler-healthcheck (build issue installing or using the healthcheck script)
+
+### Link to repro
+
+https://playground.react.dev/#N4Igzg9grgTgxgUxALhAFwJ4AcEAIAiAlmHDIQLaEB2AhmggCYCCuAvLsADpW67EDKUOIjBhkuNDCgIA3N14M6NccFwBrBBnFhJ1AOa4AvnKqHu3TDgLFSFanUYAhNh3l8wg4QlHiAZjQAbMFk3RTRlXCoEADcEGBMzKgtsPCISMkpaegYXNNtMh2ZcAB9rdLsspxNuOAgqHVwoYIBVKkI68QAKAEo2AD4y-Ptslx7+1x5cGAQ0WB5VASERMVx-ILxExO5fKCo4NHaeAA0xrkna+rRcOACIMFgEfCVxPIzhxhcmhFbDnpNeC4NBgQfgQcgzAAW+lGvVYAzOvF4hF8uE6AEJFl5RL0EYjeNNZjAkpNeIk8YCIAEEAA6W56To3O4PJ7halhGjUjQYbr-IxuAlzXAAHgYhGiuDqAGEAoQ4GpWMBgaDwWgoVQ9IY+kKAPSi6J9biGECGIA
+
+### Repro steps
+
+When you have a function that returns a discriminated union where an object can be undefined from a hook, you still need to add a property guard when accessing a nested property, because the compiler tries to check the value without knowing that it may be undefined.
+
+This is a bit of a gotcha as Typescript is smart enough to allow this code through, but the compiler then blows up.
+
+```
+type DiscriminatedA = {
+  isSuccess: true;
+  data: { key: string };
+}
+
+type DiscriminatedB = {
+  isSuccess: false;
+  data: never;
+}
+
+type Discriminated = DiscriminatedA | DiscriminatedB;
+
+const useUnion: () => Discriminated = () => {
+  return { isSuccess: false }
+}
+
+function X() {
+  const closureData: Discriminated = useUnion();
+  const doSomething = () => {
+    if (!isSuccess) {
+      return
+    }
+    console.log(closureData.data.key);
+  }
+  return <div onClick={doSomething}></div>
+}
+```
+
+If you do `closureData.data?.key` this works.
+
+On a separate note, most of the issues we had previously with the compiler have been fixed, good work team.
+
+### How often does this bug happen?
+
+Every time
+
+### What version of React are you using?
+
+19.0.0-rc-02c0e824-20241028
+
+### What version of React Compiler are you using?
+
+19.0.0-beta-63b359f-20241101

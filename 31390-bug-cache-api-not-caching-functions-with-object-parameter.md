@@ -1,0 +1,49 @@
+# Bug: `cache` API Not Caching Functions with Object Parameter
+
+> Issue #31390 - Created on 10/31/2024
+
+> Original URL: https://github.com/facebook/react/issues/31390
+
+## Description
+
+When using the `cache` utility to cache function that takes an object as input, the caching doesn't work.
+
+## React version:
+All versions that include the cache API.
+
+## Steps To Reproduce
+
+1. Create a function using the `cache` utility, with a destructured parameter object as input:
+   ```typescript
+   import { cache } from "react";
+
+   interface Props {
+     params: Promise<{ query?: string; page?: number }>;
+   }
+
+   const getPosts = cache(async ({ query, page }: Props["params"]) => {
+     // Function logic
+   });
+   ```
+
+2. Attempt to call `getPosts` multiple times with the same parameters.
+
+3. Observe that caching does not occur, and the function executes on each call instead of retrieving from cache.
+
+In comparison, if the function is structured to accept individual parameters (as shown below), caching works as expected:
+
+```typescript
+import { cache } from "react";
+
+const getPosts = cache(async (query?: string, page?: number) => {
+  // Function logic
+});
+```
+
+## The current behavior
+
+When `getPosts` accepts an object as input, caching does not work, and the function executes anew for each call, even with identical parameters.
+
+## The expected behavior
+
+`cache` should correctly cache function calls, regardless of whether the input is provided as individual parameters or a single object. In this case, `getPosts` should only execute once per unique set of parameters, reusing the cached result for subsequent calls with identical parameters.

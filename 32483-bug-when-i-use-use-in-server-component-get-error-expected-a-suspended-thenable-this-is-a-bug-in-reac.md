@@ -1,0 +1,96 @@
+# Bug: When I Use use() in server component, get [Error: Expected a suspended thenable. This is a bug in React. Please file an issue.]
+
+> Issue #32483 - Created on 2/27/2025
+
+> Original URL: https://github.com/facebook/react/issues/32483
+
+## Description
+
+<!--
+  Please provide a clear and concise description of what the bug is. Include
+  screenshots if needed. Please test using the latest version of the relevant
+  React packages to make sure your issue has not already been fixed.
+-->
+
+React version: 19.0.0
+
+## Steps To Reproduce
+
+1. I tried to getting data at server by using `use()` and avoid using `useEffect()` in client component for performance 
+
+<!--
+  Your bug will get fixed much faster if we can run your code and it doesn't
+  have dependencies other than React. Issues without reproduction steps or
+  code examples may be immediately closed as not actionable.
+-->
+
+Link to code example:
+
+```typescript
+'use server'
+
+import { use } from 'react'
+import { getItsmeStores } from '@/actions/itsme-v1/store/action'
+import ItsmeStoreRadio from '@/components/store-radio/itsme-store-radio'
+import React, { Suspense } from 'react'
+import Loading from '@/app/(main)/store/product-categories/loading'
+import { getItsmeProductCategories } from '@/actions/itsme-v1/store/category/action'
+import StoreProductCategoriesContent from '@/app/(main)/store/product-categories/_components/content'
+
+type StoreProductCategoriesPageProps = {
+  searchParams: { [key: string]: string | undefined }
+}
+
+const StoreProductCategoriesPage = async (
+  props: StoreProductCategoriesPageProps,
+) => {
+  const { searchParams } = props
+  const storeID = searchParams?.store_id ?? ''
+  const stores = use(getItsmeStores()) // ❗️ getting error
+  const initialCategories = use(getItsmeProductCategories(storeID)) //❗️ getting error
+
+  return (
+    <Suspense fallback={<Loading />}>
+      <ItsmeStoreRadio stores={stores} />
+      <StoreProductCategoriesContent
+        storeID={storeID as string}
+        initialCategories={initialCategories}
+      />
+    </Suspense>
+  )
+}
+
+export default StoreProductCategoriesPage
+```
+
+<!--
+  Please provide a CodeSandbox (https://codesandbox.io/s/new), a link to a
+  repository on GitHub, or provide a minimal code example that reproduces the
+  problem. You may provide a screenshot of the application if you think it is
+  relevant to your bug report. Here are some tips for providing a minimal
+  example: https://stackoverflow.com/help/mcve.
+-->
+
+## The current behavior
+- And then, I could find the error in terminal
+```terminal
+  ⨯ [Error: failed to pipe response] {
+[cause]: [Error: Expected a suspended thenable. This is a bug in React. Please file an issue.] {
+ digest: '1982665415'
+  }
+ }
+```
+
+so I tried to getting static storeID instead of getting searchParams by props.
+But, it didn`t work.. :(
+
+## The expected behavior
+
+But, I found the reason...!
+Remove `async()` is the answer.
+
+And if you don't mind, I would appreciate it if you could explain in detail the cause of this issue.
+
+thank you.
+
+https://github.com/vercel/next.js/issues/51477

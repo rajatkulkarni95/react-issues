@@ -1,0 +1,258 @@
+# Bug: White Screen Issue with Vite React App on iOS – Works on Other Platforms
+
+> Issue #30648 - Created on 8/9/2024
+
+> Original URL: https://github.com/facebook/react/issues/30648
+
+## Description
+
+I’m developing a React application using Vite, and I'm facing an issue where the app displays a white blank screen only on iOS devices. But it works perfectly on Android devices and desktop browsers. I’ve checked it using Chrome Inspect on my iPhone, and the console shows “Vite connecting” and “Vite connected” but the screen remains blank.Please check the attached package.json and vite.config.js for reference. Any help or advice would be greatly appreciated!-->
+
+
+
+
+**package.json**
+
+`{
+  "name": "my-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint:check": "NODE_OPTIONS='--max-old-space-size=4096' eslint . --ext=js,jsx --no-color",
+    "lint:fix": "NODE_OPTIONS='--max-old-space-size=4096' eslint . --ext=js,jsx --fix",
+    "audit:fix": "npm audit fix",
+    "prettier:check": "prettier --check \"src/**/*.{js,jsx}\"",
+    "prettier:fix": "prettier --write \"src/**/*.{js,jsx}\""
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-regular-svg-icons": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@hookform/resolvers": "^3.1.0",
+    "@reduxjs/toolkit": "^1.9.5",
+    "@tanstack/react-query": "^4.29.5",
+    "@tanstack/react-query-devtools": "^4.29.5",
+    "axios": "^1.3.6",
+    "bootstrap": "^5.1.3",
+    "classnames": "^2.3.2",
+    "country-state-city": "^3.1.4",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.7.4",
+    "react-currency-input-field": "^3.6.11",
+    "react-date-picker": "^10.5.2",
+    "react-datepicker": "^4.11.0",
+    "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
+    "react-google-autocomplete": "^2.7.3",
+    "react-hook-form": "^7.43.9",
+    "react-redux": "^8.1.2",
+    "react-router-dom": "^6.10.0",
+    "react-select": "^5.7.2",
+    "react-signature-canvas": "^1.0.6",
+    "react-slick": "^0.29.0",
+    "react-switch": "^7.0.0",
+    "react-table": "^7.8.0",
+    "react-time-picker": "^6.5.2",
+    "react-toastify": "^9.1.2",
+    "react-webcam": "^7.1.1",
+    "redux-persist": "^6.0.0",
+    "slick-carousel": "^1.8.1",
+    "socket.io-client": "^4.7.1",
+    "yup": "^1.1.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.21.3",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^4.0.0-beta.0",
+    "autoprefixer": "^10.4.14",
+    "eslint": "^8.38.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-extra-rules": "^0.0.0-development",
+    "eslint-plugin-flowtype": "^8.0.3",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jest": "^27.2.1",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-lodash": "^7.4.0",
+    "eslint-plugin-no-inline-styles": "^1.0.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.3.4",
+    "prettier": "^2.8.8",
+    "pretty-quick": "^3.1.3",
+    "sass": "^1.62.0",
+    "vite": "^4.3.0",
+    "vite-plugin-eslint": "^1.8.1"
+  }
+}
+{
+  "name": "my-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint:check": "NODE_OPTIONS='--max-old-space-size=4096' eslint . --ext=js,jsx --no-color",
+    "lint:fix": "NODE_OPTIONS='--max-old-space-size=4096' eslint . --ext=js,jsx --fix",
+    "audit:fix": "npm audit fix",
+    "prettier:check": "prettier --check \"src/**/*.{js,jsx}\"",
+    "prettier:fix": "prettier --write \"src/**/*.{js,jsx}\""
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-regular-svg-icons": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@hookform/resolvers": "^3.1.0",
+    "@reduxjs/toolkit": "^1.9.5",
+    "@tanstack/react-query": "^4.29.5",
+    "@tanstack/react-query-devtools": "^4.29.5",
+    "axios": "^1.3.6",
+    "bootstrap": "^5.1.3",
+    "classnames": "^2.3.2",
+    "country-state-city": "^3.1.4",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.4",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.7.4",
+    "react-currency-input-field": "^3.6.11",
+    "react-date-picker": "^10.5.2",
+    "react-datepicker": "^4.11.0",
+    "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
+    "react-google-autocomplete": "^2.7.3",
+    "react-hook-form": "^7.43.9",
+    "react-redux": "^8.1.2",
+    "react-router-dom": "^6.10.0",
+    "react-select": "^5.7.2",
+    "react-signature-canvas": "^1.0.6",
+    "react-slick": "^0.29.0",
+    "react-switch": "^7.0.0",
+    "react-table": "^7.8.0",
+    "react-time-picker": "^6.5.2",
+    "react-toastify": "^9.1.2",
+    "react-webcam": "^7.1.1",
+    "redux-persist": "^6.0.0",
+    "slick-carousel": "^1.8.1",
+    "socket.io-client": "^4.7.1",
+    "yup": "^1.1.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.21.3",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^4.0.0-beta.0",
+    "autoprefixer": "^10.4.14",
+    "eslint": "^8.38.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-extra-rules": "^0.0.0-development",
+    "eslint-plugin-flowtype": "^8.0.3",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jest": "^27.2.1",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-lodash": "^7.4.0",
+    "eslint-plugin-no-inline-styles": "^1.0.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.3.4",
+    "prettier": "^2.8.8",
+    "pretty-quick": "^3.1.3",
+    "sass": "^1.62.0",
+    "vite": "^4.3.0",
+    "vite-plugin-eslint": "^1.8.1"
+  }
+}`
+
+
+
+
+
+**vite.config.js**
+
+` import react from '@vitejs/plugin-react'
+import { defineConfig, loadEnv } from 'vite'
+import eslint from 'vite-plugin-eslint'
+
+// 
+export default ({ mode }) => {
+  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
+
+  return defineConfig({
+    base:'/',
+    plugins: [react(), eslint()],
+    server: {
+      port: 3000,
+    },
+    resolve: {
+      alias: [
+        { find: '@views', replacement: '/src/views' },
+        { find: '@components', replacement: '/src/components' },
+        { find: '@assets', replacement: '/src/assets' },
+        { find: '@config', replacement: '/src/config' },
+        { find: '@services', replacement: '/src/services' },
+        { find: '@hooks', replacement: '/src/hooks' },
+        { find: '@utils', replacement: '/src/utils' },
+        { find: '@redux', replacement: '/src/redux' },
+      ],
+    },
+    define: {
+      'process.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL),
+      'process.env.VITE_VIN_API_URL': JSON.stringify(process.env.VITE_VIN_API_URL),
+      'process.env.VITE_VIN_API_TOKEN': JSON.stringify(process.env.VITE_VIN_API_TOKEN),
+      'process.env.VITE_VIN_API_HOST': JSON.stringify(process.env.VITE_VIN_API_HOST),
+    },
+  })
+}}https://vitejs.dev/config/
+ `
+
+
+
+
+![Image](https://github.com/user-attachments/assets/5b2b518d-c461-4fdf-84dc-d52e65beb4b4)
+![Image2](https://github.com/user-attachments/assets/f40749b5-febc-4a3d-bd9f-4d219ba6905e)
+
+
+
+
+
+## The expected behavior : The app should render and function correctly across all devices, including iOS. No white screen should be displayed, and any errors or issues should be visible in the console if present.
+
