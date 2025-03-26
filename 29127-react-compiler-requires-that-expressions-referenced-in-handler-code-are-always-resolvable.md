@@ -12,7 +12,7 @@ I ran about the issue, that react-compiler requires all expressions used in even
 
 Here is a very simplified sample:
 
-````
+```
 
 const App = () => {
     return <div>
